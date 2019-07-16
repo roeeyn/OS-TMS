@@ -1,0 +1,8 @@
+{
+  "name": "server-express",
+  "version": "1.0.0",
+  "description": "Server fo OS-TMS",
+  "main": "index.js",
+  "author": "Rodrigo M.",
+  "license": "MIT"
+}
