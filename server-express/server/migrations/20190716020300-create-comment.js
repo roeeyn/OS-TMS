@@ -8,12 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      /*userId: {
         type: Sequelize.INTEGER
       },
       taskId: {
         type: Sequelize.INTEGER
-      },
+      },*/
       commentText: {
         type: Sequelize.STRING
       },
