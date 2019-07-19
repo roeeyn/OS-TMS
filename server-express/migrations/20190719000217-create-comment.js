@@ -8,13 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      /*userId: {
-        type: Sequelize.INTEGER
-      },
-      taskId: {
-        type: Sequelize.INTEGER
-      },*/
-      commentText: {
+      comment: {
         type: Sequelize.STRING
       },
       createdAt: {

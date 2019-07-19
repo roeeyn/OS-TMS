@@ -1,8 +1,16 @@
 {
-  "name": "server-express",
+  "name": "OS-TMS",
   "version": "1.0.0",
-  "description": "Server fo OS-TMS",
+  "description": "Open Source Task Management System",
   "main": "index.js",
-  "author": "Rodrigo M.",
-  "license": "MIT"
+  "repository": "git@github.com:roeeyn/OS-TMS.git",
+  "author": "Rodrigo M. <rodrigo.medina.neri@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.10.1",
+    "sequelize-cli": "^5.5.0"
+  }
 }
