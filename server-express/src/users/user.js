@@ -9,4 +9,10 @@ const createNewUser = (req, res) => {
 
 };
 
-module.exports = { createNewUser };
+const getAllUsers = (req, res) => {
+  db.User.findAll()
+    .then(result => res.send(result))
+    .catch(error => res.send(error));
+};
+
+module.exports = { createNewUser, getAllUsers };

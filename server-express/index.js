@@ -11,7 +11,7 @@ app.get('/', (req, res) => res.send('All cool'));
 
 app.route('/user')
   .post(users.createNewUser)
-  .get()
+  .get(users.getAllUsers)
   .patch()
   .delete();
 
