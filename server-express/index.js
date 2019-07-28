@@ -15,7 +15,10 @@ app.route('/user')
   .patch()
   .delete();
 
-db.sequelize.sync({ force: true })
+app.route('/user/:userId')
+  .get(users.getUserById)
+
+db.sequelize.sync()
   .then(() =>
     app.listen(port, () =>
       console.log(`Server listening in ${port}`)))
