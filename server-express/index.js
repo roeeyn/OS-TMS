@@ -1,5 +1,5 @@
 const db = require('./models/index');
-const app = require('express')();
+let app = require('express')();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
 const users = require('./src/users/user');
@@ -7,7 +7,7 @@ const users = require('./src/users/user');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => res.send('All cool'));
+app.get('/', (req, res) => res.send('All cool :)'));
 
 app.route('/user')
   .post(users.createNewUser)
@@ -18,8 +18,10 @@ app.route('/user/:userId')
   .patch(users.editUserById)
   .delete(users.deleteByUserId)
 
-db.sequelize.sync()
+db.sequelize.sync({ force: process.env.NODE_ENV == 'test' })
   .then(() =>
     app.listen(port, () =>
-      console.log(`Server listening in ${port}`)))
+      console.log(`Server listening in ${port}, ENV = ${process.env.NODE_ENV}`)))
   .catch(err => {throw new Error(err)});
+
+module.exports = app;
