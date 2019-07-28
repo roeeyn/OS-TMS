@@ -1,65 +1,46 @@
 const { User } = require('../../models/index');
 const { sendSuccess, sendError } = require('../lib/request-response');
 
+const processResult = (responseObject, promise) =>
+  promise
+    .then(resultUser => sendSuccess(responseObject, resultUser))
+    .catch(error => sendError(responseObject, error));
+
 const createNewUser = (req, res) => {
   const { firstName, lastName, email, password, role } = req.body;
-
-  User.create({ firstName, lastName, email, password, role })
-    .then(newUser => sendSuccess(res, newUser))
-    .catch(error => sendError(res, error));
-
+  processResult(res, User.create({ firstName, lastName, email, password, role }));
 };
 
 const getAllUsers = (req, res) => {
-  User.findAll()
-    .then(users => sendSuccess(res, users))
-    .catch(error => sendError(res, error));
+  processResult(res, User.findAll())
 };
 
-const getUserById = (req, res) => {
-
-  const { userId } = req.params;
-
-  User.findByPk(userId)
+const executeAfterFindingById = (userId, fn, params) => new Promise((resolve, reject) => {
+  return User.findByPk(userId)
     .then(user => {
-      // project will be an instance of Project and stores the content of the table entry
-      // with id 123. if such an entry is not defined you will get null
-      user ? sendSuccess(res, user) : sendError(res, "No user found");
+      // user will be an instance of User and stores the content of the table entry
+      // with id userId. if such an entry is not defined you will get null
+      return user
+        ? resolve(fn ? user[fn](params) : user)
+        : reject("No user found");
     })
-    .catch(error => sendError(res, error));
+    .catch(error => reject(error));
+});
+
+const getUserById = (req, res) => {
+  const { userId } = req.params;
+  processResult(res, executeAfterFindingById(userId));
 };
 
 const editUserById = (req, res) => {
   const { userId } = req.params;
   const { editedProperties } = req.body;
-
-  User.findByPk(userId)
-    .then(user => {
-      // project will be an instance of Project and stores the content of the table entry
-      // with id 123. if such an entry is not defined you will get null
-      return user
-      ? user.update(editedProperties)
-      : Promise.reject("No user found");
-
-    })
-    .then(updatedUser => sendSuccess(res, updatedUser))
-    .catch(error => sendError(res, error));
-
+  processResult(res, executeAfterFindingById(userId, 'update', editedProperties));
 };
 
 const deleteByUserId = (req, res) => {
   const { userId } = req.params;
-  User.findByPk(userId)
-    .then(user => {
-      // project will be an instance of Project and stores the content of the table entry
-      // with id 123. if such an entry is not defined you will get null
-      return user
-      ? user.destroy()
-      : Promise.reject("No user found");
-
-    })
-    .then(deletedUser => sendSuccess(res, deletedUser))
-    .catch(error => sendError(res, error));
+  processResult(res, executeAfterFindingById(userId, 'destroy'));
 };
 
 module.exports = { createNewUser, getAllUsers, getUserById, editUserById, deleteByUserId };
