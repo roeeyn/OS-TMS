@@ -29,4 +29,22 @@ const getUserById = (req, res) => {
     .catch(error => sendError(res, error));
 };
 
-module.exports = { createNewUser, getAllUsers, getUserById };
+const editUserById = (req, res) => {
+  const { userId } = req.params;
+  const { editedProperties } = req.body;
+
+  User.findByPk(userId)
+    .then(user => {
+      // project will be an instance of Project and stores the content of the table entry
+      // with id 123. if such an entry is not defined you will get null
+      return user
+      ? user.update(editedProperties)
+      : Promise.reject("No user found");
+
+    })
+    .then(updatedUser => sendSuccess(res, updatedUser))
+    .catch(error => sendError(res, error));
+
+};
+
+module.exports = { createNewUser, getAllUsers, getUserById, editUserById };
