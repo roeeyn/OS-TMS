@@ -12,11 +12,11 @@ app.get('/', (req, res) => res.send('All cool'));
 app.route('/user')
   .post(users.createNewUser)
   .get(users.getAllUsers)
-  .delete();
 
 app.route('/user/:userId')
   .get(users.getUserById)
   .patch(users.editUserById)
+  .delete(users.deleteByUserId)
 
 db.sequelize.sync()
   .then(() =>

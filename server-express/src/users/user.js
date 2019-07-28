@@ -47,4 +47,19 @@ const editUserById = (req, res) => {
 
 };
 
-module.exports = { createNewUser, getAllUsers, getUserById, editUserById };
+const deleteByUserId = (req, res) => {
+  const { userId } = req.params;
+  User.findByPk(userId)
+    .then(user => {
+      // project will be an instance of Project and stores the content of the table entry
+      // with id 123. if such an entry is not defined you will get null
+      return user
+      ? user.destroy()
+      : Promise.reject("No user found");
+
+    })
+    .then(deletedUser => sendSuccess(res, deletedUser))
+    .catch(error => sendError(res, error));
+};
+
+module.exports = { createNewUser, getAllUsers, getUserById, editUserById, deleteByUserId };
