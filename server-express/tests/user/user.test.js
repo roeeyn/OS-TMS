@@ -11,17 +11,19 @@ chai.should();
 
 describe("Users", () => {
 
-  before(done => {
-    db.User.create({
-      "firstName": "Rodrigo",
-      "lastName": "Medina",
-      "email": "roeeyn@gmail.com",
-      "password": "123secure",
-      "role": 0
-    }).then(() => done());
-  });
-
   describe('GET /user', () => {
+
+    before(() => {
+      return db.sequelize.sync({ force: process.env.NODE_ENV == 'test' })
+        .then(() => db.User.create({
+          "firstName": "Rodrigo",
+          "lastName": "Medina",
+          "email": "roeeyn@gmail.com",
+          "password": "123secure",
+          "role": 0
+        }));
+    });
+
     // Test to get single student record
     it("should get the student with id 1", (done) => {
       const id = 1;

@@ -18,7 +18,7 @@ app.route('/user/:userId')
   .patch(users.editUserById)
   .delete(users.deleteByUserId)
 
-db.sequelize.sync({ force: process.env.NODE_ENV == 'test' })
+db.sequelize.sync()
   .then(() =>
     app.listen(port, () =>
       console.log(`Server listening in ${port}, ENV = ${process.env.NODE_ENV}`)))
