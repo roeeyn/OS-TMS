@@ -24,8 +24,7 @@ describe("Users", () => {
         }));
     });
 
-    // Test to get single student record
-    it("should get the student with id 1", (done) => {
+    it("should get the user with id 1", (done) => {
       const id = 1;
       chai.request(app)
         .get(`/user/${id}`)
@@ -33,12 +32,19 @@ describe("Users", () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.ownProperty('success');
+          res.body.success.should.have.ownProperty('id');
+          res.body.success.should.have.ownProperty('firstName');
+          res.body.success.should.have.ownProperty('lastName');
+          res.body.success.should.have.ownProperty('email');
+          res.body.success.should.have.ownProperty('password');
+          res.body.success.should.have.ownProperty('role');
+          res.body.success.should.have.ownProperty('createdAt');
+          res.body.success.should.have.ownProperty('updatedAt');
           done();
         });
     });
 
-    // Test to get single student record
-    it("should not get a single student record", (done) => {
+    it("should not get a single user record", (done) => {
       const id = 50;
       chai.request(app)
         .get(`/user/${id}`)
@@ -46,6 +52,26 @@ describe("Users", () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.ownProperty('error');
+          done();
+        });
+    });
+
+    it("should get all users", (done) => {
+      chai.request(app)
+        .get(`/user`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.ownProperty('success');
+          res.body.success.should.be.a('array');
+          res.body.success[0].should.have.ownProperty('id');
+          res.body.success[0].should.have.ownProperty('firstName');
+          res.body.success[0].should.have.ownProperty('lastName');
+          res.body.success[0].should.have.ownProperty('email');
+          res.body.success[0].should.have.ownProperty('password');
+          res.body.success[0].should.have.ownProperty('role');
+          res.body.success[0].should.have.ownProperty('createdAt');
+          res.body.success[0].should.have.ownProperty('updatedAt');
           done();
         });
     });
